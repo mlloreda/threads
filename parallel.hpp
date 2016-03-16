@@ -56,7 +56,7 @@ struct work {
         if(DIM==3) {
             work<FUNC, DIM-1> w;
             for(;  iter < b; iter++) {
-                queues[iter % NTHREADS].enqueue( w, ref, iterations);
+                queues[iter % NTHREADS].enqueue(w, ref, iterations);
             }
             for(auto &q : queues) q.sync();
         }

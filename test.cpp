@@ -7,7 +7,7 @@ using namespace std::chrono;
 
 using namespace std;
 
-void blah(int &c, int a, int b) {
+void target_function(int &c, int a, int b) {
     std::cout << "starting b" << std::endl;
     for(int i = 0; i < b; i++)
         c += a;// + b;
@@ -25,13 +25,13 @@ int main(int argc, char *argv[])
     async_queue my_queue;
     int c = 0;
     float d = 0;
-    my_queue.enqueue(blah, std::ref(c), 1, 500);
+    my_queue.enqueue(target_function, std::ref(c), 1, 500);
     my_queue.enqueue(other, std::ref(d), 1, 500);
     my_queue.sync();
     std::cout << c << std::endl;
-    my_queue.enqueue(blah, std::ref(c), 7, 5000);
-    my_queue.enqueue(blah, std::ref(c), 9, 5000000000);
-    my_queue.enqueue(blah, std::ref(c), 1, 15);
+    my_queue.enqueue(target_function, std::ref(c), 7, 5000);
+    my_queue.enqueue(target_function, std::ref(c), 9, 5000000000);
+    my_queue.enqueue(target_function, std::ref(c), 1, 15);
     //for(int i = 0; i < 100; i++)
     //std::cout << c << std::endl;
 
