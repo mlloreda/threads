@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   std::cout << c << std::endl;
   std::cout << dec;
   //auto iter = make_tuple<size_t, size_t, size_t, size_t>((10 * argc + 1), (100 * argc + 1), (100 * argc + 1), (100 * argc + 1));
-  auto iter = dim_t{{size_t(2000000 * argc ), size_t(1000 ), size_t(1), size_t(16)}};
+  auto iter = dim_t{{size_t(2000 * argc ), size_t(100), size_t(1), size_t(16)}};
 
   vector<float> out(get<0>(iter)* get<2>(iter)* get<2>(iter)* get<3>(iter));
   vector<float> in(get<0>(iter)* get<2>(iter)* get<2>(iter)* get<3>(iter));
