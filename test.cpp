@@ -61,12 +61,10 @@ int main(int argc, char *argv[])
   //vector<float> in1(get<0>(iter)* get<1>(iter)* get<2>(iter)* get<3>(iter), argc);
   for(int i = 0; i < 1; i ++) {
     auto start = high_resolution_clock::now();
-#if 0
     parallel_mat par(iter, [&](const dim_t &loc) {
         out[get<3>(loc)*get<3>(iter) + get<2>(loc) * get<2>(iter) + get<1>(loc) *get<1>(iter) + loc[0]] =
           (in[get<3>(loc)*get<3>(iter) + get<2>(loc) * get<2>(iter) + get<1>(loc) *get<1>(iter) + loc[0]]);
       });
-#endif
 
     auto ms = duration_cast<milliseconds>(high_resolution_clock::now() - start).count();
     std::cout << "duration: " << ms << "ms"<< std::endl;

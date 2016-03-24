@@ -49,7 +49,7 @@ public:
 
 template<typename FUNC, size_t DIM>
 struct work {
-  void operator()(const parallel_mat *ref, dim_t iterations)
+  void operator()(const parallel_mat *ref, dim_t iterations) const
   {
     const size_t &b    = get<DIM>(ref->getBound());
     size_t &iter = get<DIM>(iterations);
@@ -71,7 +71,7 @@ struct work {
 
 template<typename FUNC>
 struct work<FUNC, 0> {
-  void operator()(const parallel_mat *ref, dim_t iterations)
+  void operator()(const parallel_mat *ref, dim_t iterations) const
   {
     const size_t &b    = get<0>(ref->getBound());
     size_t &iter = get<0>(iterations);
