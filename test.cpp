@@ -8,11 +8,11 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-  //auto iter = make_tuple<size_t, size_t, size_t, size_t>((10 * argc + 1), (100 * argc + 1), (100 * argc + 1), (100 * argc + 1));
-  auto iter = dim_t{{size_t(2000000 * argc ), size_t(1000 ), size_t(1), size_t(16)}};
+  auto iter = dim_t{{size_t(20000000 * argc), size_t(1000), size_t(1), size_t(16)}};
 
-  vector<float> out(get<0>(iter)* get<2>(iter)* get<2>(iter)* get<3>(iter));
-  vector<float> in(get<0>(iter)* get<2>(iter)* get<2>(iter)* get<3>(iter));
+  auto vec_size = get<0>(iter) * get<2>(iter) * get<2>(iter) * get<3>(iter);
+  vector<float> out(vec_size);
+  vector<float> in(vec_size);
   {
     auto start = high_resolution_clock::now();
     for(size_t i = 0; i < get<3>(iter); i++) {
@@ -29,20 +29,18 @@ int main(int argc, char *argv[])
     std::cout << out[24] << endl;
   }
 
-  //vector<float> out1(get<0>(iter)* get<1>(iter)* get<2>(iter)* get<3>(iter));
-  //vector<float> in1(get<0>(iter)* get<1>(iter)* get<2>(iter)* get<3>(iter), argc);
-  for(int i = 0; i < 1; i ++) {
+  {
     auto start = high_resolution_clock::now();
     parallel_mat par(iter, [&](const dim_t &loc) {
-        out[get<3>(loc)*get<3>(iter) + get<2>(loc) * get<2>(iter) + get<1>(loc) *get<1>(iter) + loc[0]] =
-          (in[get<3>(loc)*get<3>(iter) + get<2>(loc) * get<2>(iter) + get<1>(loc) *get<1>(iter) + loc[0]]);
+        out[get<3>(loc) * get<3>(iter) + get<2>(loc) * get<2>(iter) + get<1>(loc) * get<1>(iter) + loc[0]] =
+          (in[get<3>(loc) * get<3>(iter) + get<2>(loc) * get<2>(iter) + get<1>(loc) * get<1>(iter) + loc[0]]);
       });
 
     auto ms = duration_cast<milliseconds>(high_resolution_clock::now() - start).count();
     std::cout << "duration: " << ms << "ms"<< std::endl;
-
     std::cout << out[24] << endl;
   }
+
   return 0;
 }
 
