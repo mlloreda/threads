@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 {
   auto iter = dim_t{{size_t(20000000 * argc), size_t(1000), size_t(1), size_t(16)}};
 
-  auto vec_size = get<0>(iter) * get<2>(iter) * get<2>(iter) * get<3>(iter);
+  auto vec_size = get<0>(iter) * get<1>(iter) * get<2>(iter) * get<3>(iter);
   vector<float> out(vec_size);
   vector<float> in(vec_size);
   {
