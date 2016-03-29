@@ -4,6 +4,8 @@
 struct AsyncQueueTest : testing::Test
 {
   async_queue *q;
+  int i = 0;
+  float f = 0;
 
   AsyncQueueTest()
   {
@@ -13,34 +15,31 @@ struct AsyncQueueTest : testing::Test
   {
     delete q;
   }
-
 };
 
-void target_function(int &c, int a, int b)
+void multiplication_by_addition(int &c, int a, int b)
 {
   for(int i = 0; i < b; i++)
     c += a;
 }
 
-void other(float& out, int a, int b)
+void multiply(float& out, int a, int b)
 {
   out = a * b;
 }
 
 TEST_F(AsyncQueueTest, SingleEnqueue)
 {
-  float f = 0;
-  q->enqueue(other, std::ref(f), 1, 500);
+  q->enqueue(multiply, std::ref(f), 1, 500);
+  q->enqueue(multiplication_by_addition, std::ref(i), 2, 3);
   q->sync();
   EXPECT_EQ(500, f);
+  EXPECT_EQ(6, i);
 }
 TEST_F(AsyncQueueTest, MultipleEnqueuesOne)
 {
-  int i = 0;
-  float f = 0;
-  q->enqueue(target_function, std::ref(i), 1, 500);
-  q->enqueue(other, std::ref(f), 1, 500);
-
+  q->enqueue(multiplication_by_addition, std::ref(i), 1, 500);
+  q->enqueue(multiply, std::ref(f), 1, 500);
   q->sync();
 
   EXPECT_EQ(500, i);
@@ -49,16 +48,11 @@ TEST_F(AsyncQueueTest, MultipleEnqueuesOne)
 
 TEST_F(AsyncQueueTest, MultipleEnqueuesTwo)
 {
-  int i = 0;
-
-  q->enqueue(target_function, std::ref(i), 7, 5000);
-  q->enqueue(target_function, std::ref(i), 9, 5000000000);
-  q->enqueue(target_function, std::ref(i), 1, 15);
-
+  q->enqueue(multiplication_by_addition, std::ref(i), 2, 30);
+  q->enqueue(multiplication_by_addition, std::ref(i), 9, 55);
+  q->enqueue(multiplication_by_addition, std::ref(i), -1, 15);
   q->sync();
 
-  EXPECT_EQ(2050362055, i);
+  long result = (2*30) + (9*55) + (-1*15);
+  EXPECT_EQ(result, i);
 }
-
-
-
