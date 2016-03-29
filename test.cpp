@@ -1,4 +1,3 @@
-
 #include "async_queue.hpp"
 #include "parallel.hpp"
 #include <chrono>
@@ -7,35 +6,8 @@ using namespace std::chrono;
 
 using namespace std;
 
-void target_function(int &c, int a, int b) {
-  std::cout << "starting b" << std::endl;
-  for(int i = 0; i < b; i++)
-    c += a;// + b;
-  std::cout << "ending b" << std::endl;
-}
-
-void other(float& out, int a, int b) {
-  out = a * b;
-}
-
-
 int main(int argc, char *argv[])
 {
-  async_queue my_queue;
-  int c = 0;
-  float d = 0;
-  my_queue.enqueue(target_function, std::ref(c), 1, 500);
-  my_queue.enqueue(other, std::ref(d), 1, 500);
-  my_queue.sync();
-  std::cout << c << std::endl;
-
-  my_queue.enqueue(target_function, std::ref(c), 7, 5000);
-  my_queue.enqueue(target_function, std::ref(c), 9, 5000000000);
-  my_queue.enqueue(target_function, std::ref(c), 1, 15);
-
-  std::this_thread::sleep_for(milliseconds(1000));
-  std::cout << c << std::endl;
-  std::cout << dec;
   //auto iter = make_tuple<size_t, size_t, size_t, size_t>((10 * argc + 1), (100 * argc + 1), (100 * argc + 1), (100 * argc + 1));
   auto iter = dim_t{{size_t(2000000 * argc ), size_t(1000 ), size_t(1), size_t(16)}};
 
